@@ -1,0 +1,61 @@
+<script defer language="javascript" type="text/javascript"  src="{{ "/js/jszip.js" | urlize | relURL }}"></script>
+<script defer language="javascript" type="text/javascript"  src="{{ "/js/filesaver.js" | urlize | relURL }}"></script>
+
+<form>
+    <label for="doorname">Doorname:</label><br>
+    <input type="text" id="doorname" name="dname" required><br><br>
+    <label for="ipaddress">IP Address:</label><br>
+    <input type="text" id="ipaddress" name="ipaddress" required><br><br>
+
+    <a href="{{ "/download-config-files/config-files.zip" | urlize | relURL }}" download="config-files.zip" onclick="generateAndDownloadFiles()">Get files</a>
+</form>
+
+<script defer>
+    function generateAndDownloadFiles(){
+        var doorName = document.getElementById("doorname").value || null;
+        var doorIp = document.getElementById("ipaddress").value || null;
+
+        if (doorName != null && doorIp != null){
+            var zip = new JSZip();
+            const CLUSTERNAME = "minutiae";
+
+            zip.file('galera.cnf', generateConfigFile(CLUSTERNAME, doorIp, doorIp, doorName));
+
+            zip.generateAsync({type:"blob"})
+                .then(function (blob) {
+                    saveAs(blob, "galera-config.zip");
+            });
+        }
+    }
+
+    function generateConfigFile(clusterName, allDoorIps, doorIp, doorName) {
+        return '[mysqld]\n' +
+            'binlog_format=ROW\n' +
+            'default-storage-engine=innodb\n' +
+            'innodb_autoinc_lock_mode=2\n' +
+            'bind-address=0.0.0.0\n' +
+            '\n' +
+            '# Galera Provider Configuration\n' +
+            'wsrep_on=ON\n' +
+            'wsrep_provider=/usr/lib/galera/libgalera_smm.so\n' +
+            '\n' +
+            '# Galera Cluster Configuration\n' +
+            'wsrep_cluster_name="' +
+            clusterName +
+            '"\n' +
+            'wsrep_cluster_address="gcomm://' +
+            allDoorIps +
+            '"\n' +
+            '\n' +
+            '# Galera Synchronization Configuration\n' +
+            'wsrep_sst_method=rsync\n' +
+            '\n' +
+            '# Galera Node Configuration\n' +
+            'wsrep_node_address="' +
+            doorIp +
+            '"\n' +
+            'wsrep_node_name="' +
+            doorName +
+            '"\n';
+    }
+</script>

@@ -1,0 +1,28 @@
+#TODO:
+
+sudo raspi-config
+
+-> System Options -> Boot / Auto Login -> B2 Console Autologin
+
+Finish -> No Reboot
+
+sudo apt-get install ufw
+
+sudo reboot
+
+sudo blkid -o list -w /dev/null
+
+sudo mkdir /media/usb
+
+sudo mount -t vfat -o utf8,uid=pi,gid=pi /dev/sda1 /media/usb
+ 
+cp -r /media/usb/shdb/shdbnew .
+
+sudo umount /media/usb
+
+cd shdbnew
+
+sudo chmod +x ./start.sh
+
+./start.sh
+

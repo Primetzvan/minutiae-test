@@ -1,0 +1,70 @@
+## Mount usb stick
+
+- Insert Stick into Raspberry Pi and put following commands into the terminal:
+
+```
+sudo mkdir /media/usb
+```
+
+with `sudo blkid -o list -w /dev/null` you can get the path, name and fs_type from your stick, it probably is `/dev/sda1`.
+
+This path/name and fs_type you have to insert into the next command:
+`sudo mount -t <fs_type> -o utf8,uid=pi,gid=pi /dev/<usb stick name> /media/usb`
+
+```
+sudo cp -r /media/usb/<yourPathOnYourStick>/newcluster/ .
+
+sudo umount /media/usb
+```
+
+* You can unplug the usb stick now
+
+These previous commands are mounting the usb stick and copying the files into the root of your raspberries file system.
+
+
+### Remove login to make Kiosk mode possible 
+
+```
+sudo raspi-config
+```
+
+```
+-> System Options -> Boot / Auto Login -> B2 Console Autologin
+-> Finish -> Reboot: No
+```
+
+We use the Kiosk Mode as a super full screen mode of the frontend, which otherwise would be a normal tab in the browser. 
+The operating mode is more difficult to exit than regular full screen mode and protects against setting changes.
+Notice, that it also works on raspbian lite as a normal (but only) user interface.
+
+Since you still need a password if you change to the terminal, changing the password is still an important thing to do.
+
+
+## Run installation script
+
+The installations scripts come with the system and automatically install and set up the database, the frontend, the backend
+and the Kiosk Mode.
+
+```
+cd newcluster
+sudo chmod +x ./preinstallation.sh
+sudo ./preinstallation.sh
+```
+On this point, the raspberry will automatically do a reboot to make some changes effective.
+
+---
+ 
+After the reboot put the following commands
+- Instead of `your_username` and `your_password` think of a secure password.  
+*Important*: Note it somewhere since you'll need it if you want to add more doors later. Also, you should mark your first raspberry somehow,
+because you need to know which one was the very first when adding more doors.
+
+
+```
+cd newcluster
+sudo chmod +x ./setup.sh
+sudo ./setup.sh your_username your_password
+```
+
+
+

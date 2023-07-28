@@ -1,0 +1,64 @@
+
+
+Thu Mar  3 20:36:25 2022
+Command line: TestDisk
+
+TestDisk 7.1, Data Recovery Utility, July 2019
+Christophe GRENIER <grenier@cgsecurity.org>
+https://www.cgsecurity.org
+OS: Linux, kernel 5.4.0-100-generic (#113-Ubuntu SMP Thu Feb 3 18:43:29 UTC 2022) x86_64
+Compiler: GCC 9.2
+ext2fs lib: 1.45.5, ntfs lib: libntfs-3g, reiserfs lib: none, ewf lib: none, curses lib: ncurses 6.1
+User is not root!
+Hard disk list
+
+
+TestDisk exited normally.
+Using locale 'de_AT.UTF-8'.
+
+
+Thu Mar  3 20:36:25 2022
+Command line: TestDisk /debug
+
+TestDisk 7.1, Data Recovery Utility, July 2019
+Christophe GRENIER <grenier@cgsecurity.org>
+https://www.cgsecurity.org
+OS: Linux, kernel 5.4.0-100-generic (#113-Ubuntu SMP Thu Feb 3 18:43:29 UTC 2022) x86_64
+Compiler: GCC 9.2
+ext2fs lib: 1.45.5, ntfs lib: libntfs-3g, reiserfs lib: none, ewf lib: none, curses lib: ncurses 6.1
+Warning: can't get size for Disk /dev/mapper/control - 0 B - 0 sectors, sector size=512
+Warning: can't get size for Disk /dev/loop28 - 0 B - 0 sectors, sector size=512
+Hard disk list
+Disk /dev/loop0 - 4096 B - 8 sectors (RO), sector size=512
+Disk /dev/loop1 - 226 MB / 215 MiB - 442016 sectors (RO), sector size=512
+Disk /dev/loop10 - 64 MB / 61 MiB - 126792 sectors (RO), sector size=512
+Disk /dev/loop11 - 3080 KB / 3008 KiB - 6016 sectors (RO), sector size=512
+Disk /dev/loop12 - 170 MB / 162 MiB - 333552 sectors (RO), sector size=512
+Disk /dev/loop13 - 175 MB / 167 MiB - 342664 sectors (RO), sector size=512
+Disk /dev/loop14 - 176 MB / 168 MiB - 344512 sectors (RO), sector size=512
+Disk /dev/loop15 - 56 MB / 54 MiB - 111080 sectors (RO), sector size=512
+Disk /dev/loop16 - 259 MB / 247 MiB - 507712 sectors (RO), sector size=512
+Disk /dev/loop17 - 229 MB / 219 MiB - 448512 sectors (RO), sector size=512
+Disk /dev/loop18 - 68 MB / 65 MiB - 133320 sectors (RO), sector size=512
+Disk /dev/loop19 - 563 MB / 537 MiB - 1100392 sectors (RO), sector size=512
+Disk /dev/loop2 - 222 MB / 212 MiB - 434448 sectors (RO), sector size=512
+Disk /dev/loop20 - 53 MB / 50 MiB - 104360 sectors (RO), sector size=512
+Disk /dev/loop21 - 68 MB / 65 MiB - 133552 sectors (RO), sector size=512
+Disk /dev/loop22 - 86 MB / 82 MiB - 169184 sectors (RO), sector size=512
+Disk /dev/loop23 - 161 MB / 154 MiB - 316312 sectors (RO), sector size=512
+Disk /dev/loop24 - 260 MB / 248 MiB - 509456 sectors (RO), sector size=512
+Disk /dev/loop25 - 86 MB / 82 MiB - 169776 sectors (RO), sector size=512
+Disk /dev/loop26 - 563 MB / 537 MiB - 1100336 sectors (RO), sector size=512
+Disk /dev/loop27 - 71 MB / 68 MiB - 140144 sectors (RO), sector size=512
+Disk /dev/loop3 - 116 MB / 110 MiB - 226912 sectors (RO), sector size=512
+Disk /dev/loop4 - 58 MB / 55 MiB - 113640 sectors (RO), sector size=512
+Disk /dev/loop5 - 58 MB / 55 MiB - 113680 sectors (RO), sector size=512
+Disk /dev/loop6 - 86 MB / 82 MiB - 169760 sectors (RO), sector size=512
+Disk /dev/loop7 - 64 MB / 61 MiB - 126752 sectors (RO), sector size=512
+Disk /dev/loop8 - 172 MB / 164 MiB - 337424 sectors (RO), sector size=512
+Disk /dev/loop9 - 229 MB / 219 MiB - 448512 sectors (RO), sector size=512
+Disk /dev/nvme0n1 - 1024 GB / 953 GiB - CHS 976762 64 32, sector size=512
+
+Partition table type defaults to Intel
+Media is opened in read-only.
+SIGINT detected! TestDisk has been killed.

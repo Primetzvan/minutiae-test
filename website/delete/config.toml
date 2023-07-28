@@ -1,0 +1,42 @@
+baseURL = "www.example.at"
+languageCode = "en-us"
+title = "Minutiae"
+themesDir = "./themes"
+theme = "hugo-whisper-theme-master"
+
+pygmentsCodeFences = true
+pygmentsCodefencesGuessSyntax = true
+pygmentsUseClasses = true
+
+[module]
+  [module.hugoVersion]
+    extended = true
+    min = "0.55.0"
+
+# Controls how many words are printed in the content summary on the docs homepage.
+# See https://gohugo.io/content-management/summaries/
+summaryLength = 30
+
+[[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+
+[[menu.main]]
+    name = "Docs"
+    url = "/docs/"
+    weight = 2
+
+[params]
+  google_analytics_id=""
+  homepage_image = '/images/terminal.gif'
+  homepage_button_link = '/docs'
+  homepage_button_text = 'Read The Docs'
+
+  ## You can enable to add anchor links to header elements
+  # enable_anchor_link = true
+
+  [params.logo]
+      mobile = "/images/logo.svg"
+      standard  = "/images/logo.svg"
+
