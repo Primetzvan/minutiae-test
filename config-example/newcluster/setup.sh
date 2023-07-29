@@ -21,6 +21,10 @@ sudo apt install git -y
   sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 # Install Docker Compose
 sudo apt install docker-compose -y
+#Start Docker
+cd ../../
+sudo docker-compose up --build -d
+cd ./config-example/newcluster
 # Kioskmode Setup
 sudo chmod +x kioskmode.sh
 sudo ./kioskmode.sh
