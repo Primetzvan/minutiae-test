@@ -1,16 +1,16 @@
 version: "3.3"
 services:
-  database:
-    image: rqlite/rqlite
-    container_name: database
-    ports:
-      - "4001:4001"
-      - "4002:4002"
-    environment:
-      - NODE_ID=1
-      - RAFT_ADDR_ADV="192.168.0.13:4002"
-      - HTTP_ADDR_ADV="192.168.0.13:4001"
-    restart: always
+#  database:
+#    image: rqlite/rqlite
+#    container_name: database
+#    ports:
+#      - "4001:4001"
+#      - "4002:4002"
+#    environment:
+#      - NODE_ID=1
+#      - RAFT_ADDR_ADV="192.168.0.13:4002"
+#      - HTTP_ADDR_ADV="192.168.0.13:4001"
+#    restart: always
   mosquitto:
     image: eclipse-mosquitto:1.6.15
     container_name: mosquitto
