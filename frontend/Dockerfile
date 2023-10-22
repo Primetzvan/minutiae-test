@@ -6,8 +6,8 @@ COPY public/ /src/public
 COPY src/ /src/src
 RUN npm install --force
 COPY . . 
-#RUN npm run-script build
-CMD ["npm","run-script","build"]
+RUN npm run-script build
+#CMD ["npm","run-script","build"]
 #RUN npx serve -s build
 
 FROM nginx:stable-alpine
