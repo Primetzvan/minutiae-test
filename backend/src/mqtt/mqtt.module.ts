@@ -18,7 +18,7 @@ import { LogsModule } from "../logs/logs.module";
         name: 'MQ_CLIENT',
         transport: Transport.MQTT,
         options: {
-          url: 'http://mosquitto:1883',
+          url: 'http://localhost:1883',
         },
       },
     ]),

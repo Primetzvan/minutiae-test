@@ -22,7 +22,7 @@ async function bootstrap() {
     {
       transport: Transport.MQTT,
       options: {
-        url: 'http://mosquitto:1883',
+        url: 'http://localhost:1883',
       },
     },
     { inheritAppConfig: true },
