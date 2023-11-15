@@ -22,13 +22,17 @@ import { LogsModule } from './logs/logs.module';
     LogsModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'rqlite',
+      type: 'mysql',
+      database: 'mariadb',
+      host: 'database',
+      port: 3306,
+      username: 'user',
+      password: 'password',
       autoLoadEntities: true,
-      synchronize: true, // DISABLE in production
+      synchronize: false, // DISABLE in production
     }),
   ],
   controllers: [AppController, AccessesController],
   providers: [AppService],
 })
-export class AppModule {} 
+export class AppModule {}
