@@ -1,16 +1,26 @@
 #stage 1
 FROM node:16 as build
-WORKDIR /src
-COPY ./package.json /src/
-COPY public/ /src/public
-COPY src/ /src/src
+WORKDIR /app
+COPY ./package*.json ./
+# Install dependencies
 RUN npm install --force
-COPY . . 
-RUN npm run-script build
-#CMD ["npm","run-script","build"]
-#RUN npx serve -s build
 
-FROM nginx:stable-alpine
-COPY --from=build /src/build /usr/share/nginx/html
-EXPOSE 3001
+# Copy the entire application code to the container
+COPY . .
+
+# Build the React app for production
+RUN npm run-script build
+
+# Use Nginx as the production server
+FROM nginx:alpine
+
+COPY /nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy the built React app to Nginx's web server directory
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose port 80 for the Nginx server
+EXPOSE 80
+
+# Start Nginx when the container runs
 CMD ["nginx", "-g", "daemon off;"]
