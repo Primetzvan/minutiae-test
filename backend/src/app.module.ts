@@ -29,7 +29,7 @@ import { LogsModule } from './logs/logs.module';
       username: 'user',
       password: 'password',
       autoLoadEntities: true,
-      synchronize: false, // DISABLE in production
+      synchronize: true, // DISABLE in production
     }),
   ],
   controllers: [AppController, AccessesController],
