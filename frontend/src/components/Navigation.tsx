@@ -33,7 +33,8 @@ export default function MenuAppBar() {
  // const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const { data, isLoading } = useQuery(getAdminProfile.name, getAdminProfile); 
+  //const { data, isLoading } = useQuery(getAdminProfile.name, getAdminProfile);
+  const { data, isLoading } = useQuery("AdminProfile2", getAdminProfile); 
 
   // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   setAuth(event.target.checked);
@@ -48,7 +49,7 @@ export default function MenuAppBar() {
   };
 
   const logout = () => {
-    
+
   };
 
   if(data == null){
@@ -72,7 +73,7 @@ export default function MenuAppBar() {
             Minutiae
           </Typography>
          {/* {auth &&  */}
-     
+
             <div hidden={data == null}>
               <IconButton data-cy="nav"
                 aria-label="account of current user"
@@ -103,7 +104,7 @@ export default function MenuAppBar() {
                 <MenuItem onClick={handleClose} data-cy="logout" ><Link to='/' onClick={()=> {logout(); window.location.href='/'}} style={{color:'black', textDecoration:'none'}}>Log out</Link></MenuItem>
               </Menu>
             </div>
-       
+
           {/* } */}
         </Toolbar>
       </AppBar>

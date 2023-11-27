@@ -76,7 +76,7 @@ const roles = [
 export default function NewUserForm() {
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
- 
+
   const [currency, setCurrency] = useState('ADMIN');
   const classes = useStyles();
   const params = useParams<NewUserFormRouteProps>();
@@ -87,15 +87,16 @@ export default function NewUserForm() {
   };
 
 
-  const { data, isLoading } = useQuery(getUserDetail.name, getUserDetail(params.uuid)); 
-//   let { data, isLoading } = useQuery(getUsers.name, getUsers); 
+//  const { data, isLoading } = useQuery(getUserDetail.name, getUserDetail(params.uuid));
+  const { data, isLoading } = useQuery("UserDetail", getUserDetail(params.uuid));
+//   let { data, isLoading } = useQuery(getUsers.name, getUsers);
 
 //   const currentUser = data?.users.filter(user => {
 //       user.uuid === params.uuid}
 //       )
 
 //       console.log(currentUser);
-    
+
 //        // @ts-ignore: Object is possibly 'undefined'.
 //       const cuurent = currentUser[0] ?? null;
 
@@ -103,12 +104,12 @@ export default function NewUserForm() {
       console.log("is Loading...");
       <Loading />
   }
-  
+
 
   return (
-    <Card style={{backgroundColor:'#c6d9cb', padding:'0.5%', margin:'0.5%'}}>    
+    <Card style={{backgroundColor:'#c6d9cb', padding:'0.5%', margin:'0.5%'}}>
         <Link to='/users' style={{color:'black', textDecoration:'none'}}><Button variant='contained' style={{margin:'1%',backgroundColor:'#9bbda3', textAlign:'center'}} startIcon={<ArrowBackIcon />}>back</Button></Link>
-    
+
     <form onSubmit={handleSubmit(onSubmit)}>
 
         <div style={{display: 'inline-block',float:'left', textAlign:'left', color:'black'}}>
@@ -130,7 +131,7 @@ export default function NewUserForm() {
             {roles.map((option) => (
             <MenuItem key={option.value} value={option.value}>
                 {option.label}
-            </MenuItem> ))} </TextField>  <br></br> 
+            </MenuItem> ))} </TextField>  <br></br>
             <TextField {...register("email", {required: true, pattern: /^\S+@\S+$/i})} value={data?.email} margin="dense" id="email" label='email' variant='filled' />
             <br></br>{errors.email  && <span style={{color:'red'}}>Please enter a valid email </span>}<br></br>
             <TextField {...register("phonenr")} value={data?.phonenumber} margin="dense" id="phonenr" label='phonenr' variant='filled'/><br></br>
@@ -138,7 +139,7 @@ export default function NewUserForm() {
             <Link to='/fingerprintscan'><Button variant='outlined' style={{marginTop:'10%'}} fullWidth><FingerprintIcon style={{color:'red', marginRight:'1%'}} /> hinzufügen</Button></Link>
         </div>
         <div className={classes.root} style={{display: 'inline-block',width:'40%',float:'left', backgroundColor:'#A9C6B0', marginLeft:'3%',position:'relative', padding:'1%'}}>
-            Door Access: 
+            Door Access:
             <Button data-cy="addDoorsbtn"><AddDoors /></Button>
             <br></br>
 
@@ -147,7 +148,7 @@ export default function NewUserForm() {
                 <li>{door.doorname}</li>
             ))}
             </ul>
-            
+
 
         </div>
         <Button type="submit" variant='contained' style={{float: 'right', display:'inline-block', marginRight:'1%'}} >Save</Button>

@@ -73,7 +73,7 @@ const roles = [
 export default function NewUserForm() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
- 
+
   const [currency, setCurrency] = useState('ADMIN');
   const classes = useStyles();
   const params = useParams<NewUserFormRouteProps>();
@@ -84,7 +84,9 @@ export default function NewUserForm() {
   };
 
 
-  const { data, isLoading } = useQuery(getUserDetail.name, getUserDetail(params.uuid)); 
+  //const { data, isLoading } = useQuery(getUserDetail.name, getUserDetail(params.uuid));
+  const { data, isLoading } = useQuery("UserDetail3", getUserDetail(params.uuid));
+
 
   if(isLoading){
       console.log("is Loading...");
@@ -92,9 +94,9 @@ export default function NewUserForm() {
 
 
   return (
-    <Card style={{backgroundColor:'#c6d9cb', padding:'0.5%', margin:'0.5%'}}>    
+    <Card style={{backgroundColor:'#c6d9cb', padding:'0.5%', margin:'0.5%'}}>
         <Link to='/users' style={{color:'black', textDecoration:'none'}}><Button variant='contained' style={{margin:'1%',backgroundColor:'#9bbda3', textAlign:'center'}} startIcon={<ArrowBackIcon />} >back</Button></Link>
-    
+
     <form onSubmit={handleSubmit(onSubmit)}>
 
         <div style={{display: 'inline-block',float:'left', textAlign:'left', color:'black'}}>
@@ -108,16 +110,16 @@ export default function NewUserForm() {
              <h3 style={{paddingBottom:'20%'}}>Fingerprint:</h3>
         </div>
         <div className={classes.root} style={{display: 'inline-block', float:'left', marginLeft: '10%', backgroundColor:'white', padding:'2%'}}>
-            <p >{data?.username}</p> 
-            <p >{data?.firstname}</p> 
-            <p >{data?.lastname}</p> 
-            <p >{data?.role}</p> 
-            <p >{data?.email}</p> 
-            <p >{data?.address}</p> 
-            <p >{data?.finger}</p> 
+            <p >{data?.username}</p>
+            <p >{data?.firstname}</p>
+            <p >{data?.lastname}</p>
+            <p >{data?.role}</p>
+            <p >{data?.email}</p>
+            <p >{data?.address}</p>
+            <p >{data?.finger}</p>
         </div>
         <div className={classes.root} style={{display: 'inline-block',width:'40%',float:'left', backgroundColor:'#A9C6B0', marginLeft:'3%',position:'relative', padding:'1%'}}>
-            Door Access: 
+            Door Access:
             <Button data-cy="addDoorsbtn"><AddDoors /></Button>
             <br></br>
             List of Doors

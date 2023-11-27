@@ -74,7 +74,8 @@ const roles = [
 
 
 export default function NewUserForm() {
-  const { data, isLoading } = useQuery(getAdminProfile.name, getAdminProfile); 
+  //const { data, isLoading } = useQuery(getAdminProfile.name, getAdminProfile);
+  const { data, isLoading } = useQuery("AdminProfile", getAdminProfile);
 
   const uuid = data?.uuid;
   const { register, handleSubmit, control, formState: { errors } } = useForm<Inputs>(
@@ -91,23 +92,23 @@ export default function NewUserForm() {
   );
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    
+
     console.log(uuid);
     console.log(data);
     // debugger;
      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${uuid}`, {
        method: 'PATCH',
-       headers: { 
+       headers: {
            'Content-Type': 'application/json',
            "Access-Control-Allow-Credentials": "true",
            "Access-Control-Allow-Origin": "http://localhost:3000",
-       
+
        },
        credentials: "include",
        body: JSON.stringify(data)
      });
      const jsonData = await response.json();
- 
+
      if(response.ok){
        alert("updated");
       // window.location.href=`/new-user/${data.username}`;
@@ -122,18 +123,18 @@ export default function NewUserForm() {
     // // debugger;
     //  const response = await fetch(`${process.env.REACT_APP_API_URL}/fingers/`, {
     //    method: 'POST',
-    //    headers: { 
+    //    headers: {
     //        'Content-Type': 'application/json',
     //        "Access-Control-Allow-Credentials": "true",
     //        "Access-Control-Allow-Origin": "http://localhost:3000",
-       
+
     //    },
     //    credentials: "include",
     //    body: JSON.stringify(data)
     //  });
     //  const jsonData = await response.json();
- 
-    
+
+
     // }
 
 
@@ -158,7 +159,7 @@ export default function NewUserForm() {
       console.log("is Loading...");
       <Loading />
   }
-  
+
 
 
 function changeEditableState(){
@@ -183,7 +184,7 @@ function stringAvatar(name: string) {
 
 
   return (
-    <div style={{ padding:'0.5%', margin:'0.5%'}}>    
+    <div style={{ padding:'0.5%', margin:'0.5%'}}>
         <Link to='/management' style={{color:'black', textDecoration:'none'}}><Button variant='contained' style={{margin:'1%',backgroundColor:'#9bbda3', textAlign:'center'}} startIcon={<ArrowBackIcon />}>back</Button></Link>
 
     <Button onClick={changeEditableState}>edit</Button>
@@ -239,7 +240,7 @@ function stringAvatar(name: string) {
                 />
 
               )}
-            />: <h3>{data?.firstname}</h3> }          
+            />: <h3>{data?.firstname}</h3> }
             </TableCell>
         </TableRow>
         <TableRow>
@@ -262,7 +263,7 @@ function stringAvatar(name: string) {
                   onChange={onChange}
                   />
                 )}
-              />: <h3>{data?.lastname}</h3> }          
+              />: <h3>{data?.lastname}</h3> }
               </TableCell>
         </TableRow>
         <TableRow>
@@ -299,7 +300,7 @@ function stringAvatar(name: string) {
                   onChange={onChange}
                 />
                 )}
-              />: <h3>{data?.email}</h3> }             
+              />: <h3>{data?.email}</h3> }
             {errors.email  && <span style={{color:'red'}}>Please enter a valid email </span>}
           </TableCell>
         </TableRow>
@@ -323,7 +324,7 @@ function stringAvatar(name: string) {
                   onChange={onChange}
                 />
             )}
-              />: <h3>{data?.phonenumber}</h3> } 
+              />: <h3>{data?.phonenumber}</h3> }
 
           </TableCell>
         </TableRow>
@@ -338,7 +339,7 @@ function stringAvatar(name: string) {
           </TableCell>
         </TableRow>
       </TableBody>
-      
+
     </Table>
     <div hidden={!editable}>
         <Button  type="submit" variant='contained' style={{float:'right', display:'inline-block'}} >Save</Button>
@@ -346,9 +347,9 @@ function stringAvatar(name: string) {
     <div style={{float:'left',width:'40%',maxWidth:'40%',marginTop:'3%',marginBottom:'3%'}}>
         <Avatar {...stringAvatar(name1)} style={{padding:'2%'}} />
       </div>
-   
+
     {/* <div style={{width:'100%', maxWidth:'100%'}}>
-      
+
         <div style={{display: 'inline-block',float:'left', textAlign:'left', color:'black', width:'15%', maxWidth:'15%', fontSize:'1vw'}}>
              <h3 style={{padding:'4%'}}>Username:</h3>
              <h3 style={{padding:'4%'}}>Firstname:</h3>
@@ -381,10 +382,10 @@ function stringAvatar(name: string) {
         </div>
         </div> */}
 
-       
+
 
         <div className={classes.root} style={{display: 'inline-block',width:'50%',float:'right', backgroundColor:'#A9C6B0', marginLeft:'3%',position:'relative', padding:'1%'}}>
-            Door Access: 
+            Door Access:
             <Button data-cy="addDoorsbtn"><AddDoors /></Button>
             <br></br>
 
@@ -393,7 +394,7 @@ function stringAvatar(name: string) {
                 <li>{door.doorname}</li>
             ))}
             </ul>
-            
+
 
         </div>
         {/* <div hidden={!passwordChange}>

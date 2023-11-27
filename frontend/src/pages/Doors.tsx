@@ -19,7 +19,7 @@ import Loading from '../components/Loading';
 
 
 
-    //#region 
+    //#region
 
     //const [doors, setDoors] = useState<Door[]>([]);
     // useEffect(()=>{
@@ -34,10 +34,9 @@ import Loading from '../components/Loading';
 
 //#endregion
 
-    
     const Doors: React.FC = () => {
-       const { data, isLoading } = useQuery(getDoors.name, getDoors); //isLoading
- 
+       const { data, isLoading } = useQuery("Doors", getDoors); //isLoading
+
 
        //return <span>{getDoors.name}</span>
         if(isLoading){
@@ -45,21 +44,20 @@ import Loading from '../components/Loading';
             <Loading />
         }
 
-        
         const rows = data?.sort((a, b) => a.ip> b.ip ? 1:-1).map((door, index) => (
-            
+
             <tr key={index}>
               <td style={{border: '1px solid black'}}>{door.doorname}</td>
               <td style={{border: '1px solid black'}}>{door.ip}</td>
-              
+
               <td style={{border: '1px solid black'}}><ColorPicker /></td>
               <td>
-              
+
               </td>
             </tr>
         ))
 
-        
+
 
         const StyledTableCell = withStyles((theme: Theme) =>
         createStyles({
@@ -87,27 +85,27 @@ import Loading from '../components/Loading';
         const useStyles = makeStyles({
             table: {
               width: '60%',
-              
+
             },
           });
           const [editable, setEditable] = useState(false);
 
           const handleDoornameState = () => {
             setEditable(!editable);
-        } 
+        }
 
         const saveDoors = () => {
             //post
             alert("saved");
             setEditable(false);
-        } 
-        
+        }
+
         //debugger;
         const classes = useStyles();
 
 
              return (
-        
+
                 <div>
                 <Link to='/management' style={{color:'black', textDecoration:'none'}}><Button data-cy="backFromDoors" variant='contained' style={{margin:'1%',backgroundColor:'#9bbda3', textAlign:'center'}} startIcon={<ArrowBackIcon />}>back</Button></Link>
                     <h1 style={{textAlign:'center', marginBottom:'5%'}}>Doors</h1>
@@ -117,7 +115,7 @@ import Loading from '../components/Loading';
                     <Table className={classes.table} aria-label="customized table">
                         <TableHead>
                         <TableRow>
-                            <StyledTableCell align="left">Doorname 
+                            <StyledTableCell align="left">Doorname
                                 <Button data-cy="editDoornamebtn" onClick={handleDoornameState}><EditIcon style={{backgroundColor:'#70A07C', color:'white', borderRadius:'10%', marginLeft:'2%', marginTop:'2%'}}/></Button>
                             </StyledTableCell>
                             <StyledTableCell align="center">IP-Address</StyledTableCell>
@@ -141,7 +139,7 @@ import Loading from '../components/Loading';
               <Button variant="outlined" disabled={!editable} data-cy="saveDoorbtn" style={{float:'right',marginTop:'1%', marginRight:'20%', marginBottom:'5%'}} onClick={saveDoors}>Save</Button>
 
                 </div>
-        //#region 
+        //#region
                 // <table>
                 //     <thead>
                 //         <tr>
@@ -155,7 +153,7 @@ import Loading from '../components/Loading';
                 //         {rows}
                 //     </tbody>
                 // </table>
-            
+
 
 
            /* {doors.map(door => (

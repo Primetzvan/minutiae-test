@@ -21,7 +21,8 @@ const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 export default function FormDialog() {
   const [open, setOpen] = React.useState(false);
-  const { data, isLoading } = useQuery(getDoors.name, getDoors); //isLoading
+  //const { data, isLoading } = useQuery(getDoors.name, getDoors); //isLoading
+  const { data, isLoading } = useQuery("Doors2", getDoors); //isLoading
   const params = useParams<NewUserFormRouteProps>();
 
 
@@ -41,8 +42,8 @@ export default function FormDialog() {
   let array = data;
   let checkedArray = [];
 
-  
- 
+
+
   if (array === undefined) {
     array = [];
   }
