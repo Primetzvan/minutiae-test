@@ -18,12 +18,13 @@ export default function FormDialog(props: { uuid: string; }) {
   const [open, setOpen] = useState(false);
  // const [users, setUsers] = useState<User[]>([]);
   //const { data, isLoading } = useQuery(getUsers.name, getUsers);
-  
+
 
   //console.log("del:" + props.uuid);
 
 
-  const { data, isLoading } = useQuery(getUserDetail.name, getUserDetail(props.uuid)); 
+  //const { data, isLoading } = useQuery(getUserDetail.name, getUserDetail(props.uuid));
+  const { data, isLoading } = useQuery("UserDetail2", getUserDetail(props.uuid));
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -38,11 +39,11 @@ export default function FormDialog(props: { uuid: string; }) {
 
   const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${props.uuid}`, {
     method: 'DELETE',
-    headers: { 
+    headers: {
         'Content-Type': 'application/json',
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "http://localhost:3000",
-         
+
     },
     credentials: "include",
 });

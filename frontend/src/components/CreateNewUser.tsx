@@ -79,10 +79,11 @@ export default function UserDetail() {
     setCurrency(event.target.value);
   };
 
-  const { data, isLoading } = useQuery(getNewUserProfile.name, getNewUserProfile(params.username)); 
+  //const { data, isLoading } = useQuery(getNewUserProfile.name, getNewUserProfile(params.username));
+  const { data, isLoading } = useQuery("NewUserProfile", getNewUserProfile(params.username));
   const uuid = data?.uuid;
   console.log(data)
-  
+
   const { register, handleSubmit,control, formState: { errors } } = useForm<Inputs>({
     defaultValues: {
       username: data?.username,
@@ -94,26 +95,26 @@ export default function UserDetail() {
     }    }
   );
 
- 
+
 
   const onSubmit: SubmitHandler<Inputs> = async (userData) => {
-      
-    
+
+
 
       console.log(userData);
       const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${uuid}`, {
         method: 'PATCH',
-        headers: { 
+        headers: {
             'Content-Type': 'application/json',
             "Access-Control-Allow-Credentials": "true",
             "Access-Control-Allow-Origin": "http://localhost:3000",
-        
+
         },
         credentials: "include",
         body: JSON.stringify(userData)
       });
       const jsonData = await response.json();
-  
+
       if(response.ok){
         alert("updated");
        // window.location.href=`/new-user/${data.username}`;
@@ -122,12 +123,12 @@ export default function UserDetail() {
          alert(response.statusText);
       }
      }
-    
 
 
- 
 
-  // const { data, isLoading } = useQuery(getUserDetail.name, getUserDetail(params.username)); 
+
+
+  // const { data, isLoading } = useQuery(getUserDetail.name, getUserDetail(params.username));
   // let role = data?.role;
 
   // if(isLoading){
@@ -137,9 +138,9 @@ export default function UserDetail() {
 
 
   return (
-    <div>    
+    <div>
         <Link to='/users' style={{color:'black', textDecoration:'none'}}><Button variant='contained' style={{margin:'1%',backgroundColor:'#9bbda3', textAlign:'center'}} startIcon={<ArrowBackIcon />}>back</Button></Link>
-    
+
     <form onSubmit={handleSubmit(onSubmit)}>
 
     <Table style={{width:'40%', maxWidth:'40%', float:'left'}}>
@@ -192,7 +193,7 @@ export default function UserDetail() {
                 />
 
               )}
-            />        
+            />
             </TableCell>
         </TableRow>
         <TableRow>
@@ -215,7 +216,7 @@ export default function UserDetail() {
                   onChange={onChange}
                   />
                 )}
-              />        
+              />
               </TableCell>
         </TableRow>
         <TableRow>
@@ -228,8 +229,8 @@ export default function UserDetail() {
                 <MenuItem key={option.value} value={option.value}>
                     {option.label}
                 </MenuItem> ))
-              } </TextField> 
-            
+              } </TextField>
+
           </TableCell>
         </TableRow>
         <TableRow>
@@ -252,7 +253,7 @@ export default function UserDetail() {
                   onChange={onChange}
                 />
                 )}
-              />         
+              />
             {errors.email  && <span style={{color:'red'}}>Please enter a valid email </span>}
           </TableCell>
         </TableRow>
@@ -312,12 +313,12 @@ export default function UserDetail() {
           </TableCell>
         </TableRow>
       </TableBody>
-      
+
     </Table>
     <Button  type="submit" variant='contained' style={{float:'right', display:'inline-block'}} >Save</Button>
 
         <div className={classes.root} style={{display: 'inline-block',width:'50%',float:'right', backgroundColor:'#A9C6B0', marginLeft:'3%',position:'relative', padding:'1%'}}>
-            Door Access: 
+            Door Access:
             <Button data-cy="addDoorsbtn"><AddDoors /></Button>
             <br></br>
 
@@ -326,7 +327,7 @@ export default function UserDetail() {
                 <li>{door.doorname}</li>
             ))}
             </ul> */}
-            
+
 
         </div>
     </form>

@@ -57,8 +57,8 @@ const StyledTableCell = withStyles((theme: Theme) =>
         const useStyles = makeStyles({
             table: {
               width: '80%',
-             
-            
+
+
             },
             searchBar: {
                 width: '80%',
@@ -67,14 +67,15 @@ const StyledTableCell = withStyles((theme: Theme) =>
             }
           });
 
-    
-    
+
+
     export const Users: React.FC = () => {
-        const { data, isLoading } = useQuery(getUsers.name, getUsers); 
+//        const { data, isLoading } = useQuery(getUsers.name, getUsers);
+        const { data, isLoading } = useQuery("Users", getUsers);
         const [usernameSearchQuery, setUsernameSeachQuery] = useState("");
         const classes = useStyles();
-        
- 
+
+
         if(isLoading){
             console.log("is Loading ...");
             <Loading />
@@ -87,7 +88,7 @@ const StyledTableCell = withStyles((theme: Theme) =>
          const filteredUsersByUsername = filterUsersByUsername(data, usernameSearchQuery)
 
         //debugger;
-        
+
              return (
 
                 <div>
@@ -120,7 +121,7 @@ const StyledTableCell = withStyles((theme: Theme) =>
                                     {row.accesses?.map((door: Door) =>(
                                         <Chip label={door.doorname} style={{margin:'0.5%', backgroundColor: door.color}}/>
                                     ))}
-                                </StyledTableCell> 
+                                </StyledTableCell>
                                 <StyledTableCell align="right"><Link to={`/userdetail/${row.uuid}`} ><Button data-cy="userDetail"><ArrowForwardIosIcon /></Button></Link> </StyledTableCell>
                             </StyledTableRow>
                         ))}

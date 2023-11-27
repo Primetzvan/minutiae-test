@@ -73,7 +73,9 @@ export default function UserDetail() {
 
   const params = useParams<NewUserFormRouteProps>();
 
-  const { data, isLoading } = useQuery(getUserDetail.name, getUserDetail(params.uuid)); 
+  //const { data, isLoading } = useQuery(getUserDetail.name, getUserDetail(params.uuid));
+    const { data, isLoading } = useQuery("UserDetail4", getUserDetail(params.uuid));
+
   const uuid = data?.uuid;
 
   const { register,control, handleSubmit, formState: { errors } } = useForm<Inputs>({
@@ -92,17 +94,17 @@ export default function UserDetail() {
     // debugger;
      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${uuid}`, {
        method: 'PATCH',
-       headers: { 
+       headers: {
            'Content-Type': 'application/json',
            "Access-Control-Allow-Credentials": "true",
            "Access-Control-Allow-Origin": "http://localhost:3000",
-       
+
        },
        credentials: "include",
        body: JSON.stringify(data)
      });
      const jsonData = await response.json();
- 
+
      if(response.ok){
        alert("updated");
       // window.location.href=`/new-user/${data.username}`;
@@ -111,7 +113,7 @@ export default function UserDetail() {
         alert(response.statusText);
      }
     }
- 
+
   const [currency, setCurrency] = useState('User');
   const [editable, setEditable] = useState(false);
   const [passwordChange, setPasswordChange] = useState(false);
@@ -131,7 +133,7 @@ export default function UserDetail() {
       window.location.reload();
       <Loading />
   }
-  
+
 
 function changeEditableState(){
   setEditable(!editable);
@@ -156,7 +158,7 @@ function stringAvatar(name: string) {
 
   return (
 
-    <div style={{ padding:'0.5%', margin:'0.5%'}}>    
+    <div style={{ padding:'0.5%', margin:'0.5%'}}>
         <Link to='/users' style={{color:'black', textDecoration:'none'}}><Button variant='contained' style={{margin:'1%',backgroundColor:'#9bbda3', textAlign:'center'}} startIcon={<ArrowBackIcon />} data-cy="backFromDetail">back</Button></Link>
 
     <Button onClick={changeEditableState}>edit</Button>
@@ -212,7 +214,7 @@ function stringAvatar(name: string) {
                 />
 
               )}
-            />: <h3>{data?.firstname}</h3> }          
+            />: <h3>{data?.firstname}</h3> }
             </TableCell>
         </TableRow>
         <TableRow>
@@ -235,7 +237,7 @@ function stringAvatar(name: string) {
                   onChange={onChange}
                   />
                 )}
-              />: <h3>{data?.lastname}</h3> }          
+              />: <h3>{data?.lastname}</h3> }
               </TableCell>
         </TableRow>
         <TableRow>
@@ -272,7 +274,7 @@ function stringAvatar(name: string) {
                   onChange={onChange}
                 />
                 )}
-              />: <h3>{data?.email}</h3> }             
+              />: <h3>{data?.email}</h3> }
             {errors.email  && <span style={{color:'red'}}>Please enter a valid email </span>}
           </TableCell>
         </TableRow>
@@ -296,7 +298,7 @@ function stringAvatar(name: string) {
                   onChange={onChange}
                 />
             )}
-              />: <h3>{data?.phonenumber}</h3> } 
+              />: <h3>{data?.phonenumber}</h3> }
 
           </TableCell>
         </TableRow>
@@ -332,7 +334,7 @@ function stringAvatar(name: string) {
           </TableCell>
         </TableRow>
       </TableBody>
-      
+
     </Table>
     <div hidden={!editable}>
         <Button  type="submit" variant='contained' style={{float:'right', display:'inline-block'}} >Save</Button>
@@ -342,7 +344,7 @@ function stringAvatar(name: string) {
       </div>
 
       <div className={classes.root} style={{display: 'inline-block',width:'50%',float:'right', backgroundColor:'#A9C6B0', marginLeft:'3%',position:'relative', padding:'1%'}}>
-          Door Access: 
+          Door Access:
           <Button data-cy="addDoorsbtn"><AddDoors /></Button>
           <br></br>
           <ul>
