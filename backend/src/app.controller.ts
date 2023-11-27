@@ -46,6 +46,12 @@ export class AppController {
     return 'logout';
   }
 
+   @Public()
+   @Get('test')
+   test() {
+     return 'test';
+   }
+
   /*@Get('refresh')
   @UseGuards(AuthGuard('refresh'))
   async regenerateTokens(
