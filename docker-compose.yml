@@ -35,24 +35,24 @@ services:
 #    ports:
 #      - "1883:1883"
 #    restart: always
-#  backend:
-#    container_name: backend
-#    build:
-#      context: backend
-#      dockerfile: Dockerfile
-#    ports:
-#      - "3000:3000"
+  backend:
+    container_name: backend
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
 #    links:
 #      - database
 #      - mosquitto
-#    restart: always
-  frontend:
-    container_name: frontend
-    build:
-      context: frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3001:80"
     restart: always
+#  frontend:
+#    container_name: frontend
+#    build:
+#      context: frontend
+#      dockerfile: Dockerfile
+#    ports:
+#      - "3001:80"
+#    restart: always
 #    links:
 #      - backend
