@@ -63,6 +63,10 @@ const roles = [
       label: 'Admin',
     },
     {
+        value: 'Leader',
+        label: 'Leader',
+    },
+    {
       value: 'User',
       label: 'User',
     },
@@ -79,8 +83,7 @@ export default function UserDetail() {
     setCurrency(event.target.value);
   };
 
-  //const { data, isLoading } = useQuery(getNewUserProfile.name, getNewUserProfile(params.username));
-  const { data, isLoading } = useQuery("NewUserProfile", getNewUserProfile(params.username));
+  const { data, isLoading } = useQuery("getNewUserProfilename1", getNewUserProfile(params.username));
   const uuid = data?.uuid;
   console.log(data)
 

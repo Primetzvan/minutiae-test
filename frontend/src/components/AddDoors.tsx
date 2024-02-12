@@ -10,7 +10,12 @@ import { Checkbox } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import { getDoors, getUserDetail, NewUserFormRouteProps, User } from '../shared/API';
+import {
+  getDoors,
+  getUserDetail,
+  NewUserFormRouteProps,
+  overrideAccesses,
+} from '../shared/API';
 import { useQuery } from 'react-query';
 import AddIcon from '@material-ui/icons/Add';
 import Loading from './Loading';
@@ -21,22 +26,23 @@ const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 export default function FormDialog() {
   const [open, setOpen] = React.useState(false);
-  //const { data, isLoading } = useQuery(getDoors.name, getDoors); //isLoading
-  const { data, isLoading } = useQuery("Doors2", getDoors); //isLoading
+  const { data } = useQuery("Doors", getDoors); //isLoading
   const params = useParams<NewUserFormRouteProps>();
+  const { data: userData, refetch } = useQuery("UserDetail5", getUserDetail(params.uuid)); //isLoading
 
-
-  if(isLoading){
+ /* if(isLoading){
     console.log("is Loading ...");
     <Loading />
-  }
+  }*/
+
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = async () => {
     setOpen(false);
+    await refetch()
   };
 
   let array = data;
@@ -47,9 +53,11 @@ export default function FormDialog() {
   if (array === undefined) {
     array = [];
   }
+
+
   return (
     <div>
-      <Button variant="contained" color="inherit" onClick={handleClickOpen} data-cy="addDoorbtn">
+      <Button variant="contained" color="inherit" onClick={handleClickOpen} data-cy="addDoorbtn" style={{float:'right'}}>
         <AddIcon />
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -61,35 +69,42 @@ export default function FormDialog() {
           <Autocomplete
             multiple
             options = {array}
+            defaultValue={array.filter(door => {
+              if (userData !== undefined){
+                return userData!.accesses.find(d => d.door.uuid === door.uuid);
+              }
+              return [];
+            }) }
             disableCloseOnSelect
             getOptionLabel={(option) => option.doorname}
             renderOption={(option, { selected }) => (
-            <React.Fragment>
+              <React.Fragment>
               <Checkbox
-              // {...accesses.map((acc: Door) => (
-              //  if(acc.doorName == option.doorname){
-              //    selected === true;
-              //  }
-              // ))}
                icon={icon}
-                checkedIcon={checkedIcon}
-                style={{ marginRight: 8 }}
-                checked={selected}
+               checkedIcon={checkedIcon}
+               style={{ marginRight: 8 }}
+               //defaultChecked={(userData!.accesses.find(a => a.door.uuid === option.uuid))!==undefined}
+               checked={selected}
               />
-          {option.doorname}
-        </React.Fragment>
-      )}
-      style={{ width: 500 }}
-      renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
-        <TextField {...params} variant="outlined" label="Doors" placeholder="" fullWidth />
-      )}
-    />
+            {option.doorname}
+            </React.Fragment>
+            )}
+            style={{ width: 500 }}
+            onChange={async (event, value) => {
+              checkedArray = value
+              console.log(checkedArray)
+
+              let data = await overrideAccesses(params.uuid, checkedArray.map(door => door.uuid))();
+            }}
+            renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
+            <TextField {...params} variant="outlined" label="Doors" fullWidth />
+        )}
+        />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="inherit" data-cy="addDoorCancel">
-            Cancel
+            Finish
           </Button>
-          <Button onClick={handleClose} color="inherit" data-cy="addDoorSave">save</Button>
         </DialogActions>
       </Dialog>
     </div>

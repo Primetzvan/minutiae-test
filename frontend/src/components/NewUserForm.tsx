@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import { useQuery } from "react-query";
 import {  useParams } from "react-router-dom";
-import { getUserDetail } from "../shared/API";
+import {Access, getUserDetail} from "../shared/API";
 import { NewUserFormRouteProps } from '../shared/API';
 import Loading from "./Loading";
 import { Door } from "../shared/API";
@@ -87,8 +87,7 @@ export default function NewUserForm() {
   };
 
 
-//  const { data, isLoading } = useQuery(getUserDetail.name, getUserDetail(params.uuid));
-  const { data, isLoading } = useQuery("UserDetail", getUserDetail(params.uuid));
+  const { data, isLoading } = useQuery("getUserDetailname8", getUserDetail(params.uuid));
 //   let { data, isLoading } = useQuery(getUsers.name, getUsers);
 
 //   const currentUser = data?.users.filter(user => {
@@ -144,8 +143,8 @@ export default function NewUserForm() {
             <br></br>
 
             <ul>
-            {data?.accesses.map((door: Door) =>(
-                <li>{door.doorname}</li>
+            {data?.accesses.map((access: Access) =>(
+                <li>{access.door.doorname}</li>
             ))}
             </ul>
 

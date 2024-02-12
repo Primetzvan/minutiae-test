@@ -13,9 +13,9 @@ import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import NewUser from "../components/NewUser"
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import DeleteUser from '../components/DeleteUser';
-import { Link } from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import SearchBar from 'material-ui-search-bar';
-import { getUsers, User, Door } from '../shared/API';
+import {getUsers, User, Door, Access, NewUserFormRouteProps, getAdminProfile} from '../shared/API';
 import Loading from '../components/Loading';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { useState } from 'react';
@@ -28,7 +28,7 @@ function filterUsersByUsername(users: User[] | undefined, usernameSearchQuery: s
     }
 
     const filteredUsers = users.filter(user => user.username.match(usernameSearchQuery.trim()));
-    return filteredUsers;
+    return filteredUsers.sort((a, b) => a.username> b.username ? 1:-1);
 }
 
     //const [doors, setDoors] = useState<Door[]>([]);
@@ -68,31 +68,36 @@ const StyledTableCell = withStyles((theme: Theme) =>
           });
 
 
-
-    export const Users: React.FC = () => {
-//        const { data, isLoading } = useQuery(getUsers.name, getUsers);
-        const { data, isLoading } = useQuery("Users", getUsers);
+export const Users: React.FC = () => {
+        const { data, refetch } = useQuery("Users5", getUsers,);
         const [usernameSearchQuery, setUsernameSeachQuery] = useState("");
+        const [list, setList] = useState<User[]>();
         const classes = useStyles();
 
+        const { data: adminData } = useQuery("AdminProfile5", getAdminProfile);
+        const adminUuid = adminData?.uuid;
 
-        if(isLoading){
-            console.log("is Loading ...");
-            <Loading />
-        }
 
-        const onSearchbarChange = (query: string) => {
+        console.log(adminUuid)
+
+    const onSearchbarChange = (query: string) => {
             setUsernameSeachQuery(query);
         }
 
-         const filteredUsersByUsername = filterUsersByUsername(data, usernameSearchQuery)
 
+        async function removeUser(index: number) {
+            filteredUsersByUsername.splice(index);
+            await refetch();
+        }
+
+
+        let filteredUsersByUsername = filterUsersByUsername(data, usernameSearchQuery);
         //debugger;
 
              return (
 
                 <div>
-                <Link to='/management' style={{color:'black', textDecoration:'none'}}><Button data-cy="backFromUsers" variant='contained' style={{margin:'1%',backgroundColor:'#9bbda3', textAlign:'center'}} startIcon={<ArrowBackIcon />}>back</Button></Link>
+                <Link to='/management' style={{color:'black', textDecoration:'none'}}><Button variant='contained' style={{margin:'1%',backgroundColor:'#9bbda3', textAlign:'center'}} startIcon={<ArrowBackIcon />}>back</Button></Link>
                 <h1 style={{textAlign:'center'}}>Users</h1>
                 <TableContainer style={{display: 'grid', placeItems: 'center'}}>
                 <SearchBar className={classes.searchBar} onChange={onSearchbarChange} />
@@ -110,16 +115,16 @@ const StyledTableCell = withStyles((theme: Theme) =>
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                        {filteredUsersByUsername.sort((a, b) => a.username> b.username ? 1:-1).map((row) => (
+                        {filteredUsersByUsername.map((row) => (
                             <StyledTableRow key={row.uuid}>
                                 {/*hidden={row.uuid == }*/}
-                                <StyledTableCell><Button data-cy="deleteUser" ><DeleteUser uuid={row.uuid}/></Button></StyledTableCell>
+                                <StyledTableCell> {row.uuid != adminUuid && <DeleteUser uuid={row.uuid} arr={filteredUsersByUsername} removeIndex={(index:number) => removeUser(index)}/>} </StyledTableCell>
                                 <StyledTableCell align="center">{row.username}</StyledTableCell>
                                 <StyledTableCell align="center">{row.role}</StyledTableCell>
                                 <StyledTableCell align="center">{row.finger === null ? <FingerprintIcon style={{color: 'red'}}/> : <FingerprintIcon style={{color: 'green'}}/>}</StyledTableCell>
                                 <StyledTableCell align="left" style={{marginLeft: '20%'}}>
-                                    {row.accesses?.map((door: Door) =>(
-                                        <Chip label={door.doorname} style={{margin:'0.5%', backgroundColor: door.color}}/>
+                                    {row.accesses?.sort((a1, a2) => a1.door.doorname > a2.door.doorname ? 1 : -1).map((access: Access) =>(
+                                        <Chip label={access.door.doorname} style={{margin:'0.5%', backgroundColor: access.door.color}}/>
                                     ))}
                                 </StyledTableCell>
                                 <StyledTableCell align="right"><Link to={`/userdetail/${row.uuid}`} ><Button data-cy="userDetail"><ArrowForwardIosIcon /></Button></Link> </StyledTableCell>

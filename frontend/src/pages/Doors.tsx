@@ -13,9 +13,11 @@ import EditIcon from '@material-ui/icons/Edit';
 import { Button, TextField } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Link } from 'react-router-dom';
-import { getDoors } from '../shared/API';
+import {getDoors, updateDoor} from '../shared/API';
 import AddNewDoor from '../components/AddNewDoor';
 import Loading from '../components/Loading';
+import {Controller, useForm} from "react-hook-form";
+import DeleteDoor from '../components/DeleteDoor';
 
 
 
@@ -34,29 +36,41 @@ import Loading from '../components/Loading';
 
 //#endregion
 
-    const Doors: React.FC = () => {
-       const { data, isLoading } = useQuery("Doors", getDoors); //isLoading
+
+type Inputs = {
+    doorname: string
+}
+
+const Doors: React.FC = () => {
+       const { data, refetch } = useQuery("Doors6", getDoors); //isLoading
+
+        let inputChanged = false;
 
 
        //return <span>{getDoors.name}</span>
-        if(isLoading){
+       /* if(isLoading){
             console.log("is Loading ...");
             <Loading />
-        }
+        }*/
 
-        const rows = data?.sort((a, b) => a.ip> b.ip ? 1:-1).map((door, index) => (
 
-            <tr key={index}>
-              <td style={{border: '1px solid black'}}>{door.doorname}</td>
-              <td style={{border: '1px solid black'}}>{door.ip}</td>
+//         const rows = data?.sort((a, b) => a.ip> b.ip ? 1:-1).map((door, index) => (
+//
+//             <tr key={index}>
+//               <td style={{border: '1px solid black'}}>{door.doorname}</td>
+//               <td style={{border: '1px solid black'}}>{door.ip}</td>
+//
+//               <td style={{border: '1px solid black'}}><ColorPicker /></td>
+//               <td>
+//
+//               </td>
+//             </tr>
+//         ))
 
-              <td style={{border: '1px solid black'}}><ColorPicker /></td>
-              <td>
-
-              </td>
-            </tr>
-        ))
-
+        const { register,control, handleSubmit, formState: { errors } } = useForm<Inputs>({
+            //key: string,
+            //doors: {name: string, color: ColorPicker}
+        });
 
 
         const StyledTableCell = withStyles((theme: Theme) =>
@@ -87,89 +101,144 @@ import Loading from '../components/Loading';
               width: '60%',
 
             },
-          });
-          const [editable, setEditable] = useState(false);
+        });
+        const [editable, setEditable] = useState(false);
 
-          const handleDoornameState = () => {
-            setEditable(!editable);
+        const handleDoornameState = async () => {
+
+            if (editable) {
+                await setEditable(!editable);
+                await refetch();
+                console.log("refetch 2")
+            }else{
+                setEditable(!editable);
+            }
         }
 
-        const saveDoors = () => {
-            //post
-            alert("saved");
-            setEditable(false);
+
+        function handleDoornameChange(uuid: string, doorname: string) {
+
+            if (inputChanged){
+                inputChanged = false;
+                updateDoor(uuid, {doorname: doorname})().then(async () => {
+                    if (!editable) {
+                        console.log("refetch1")
+                        await refetch();
+                    }
+                });
+            }
+
         }
+
 
         //debugger;
         const classes = useStyles();
 
 
-             return (
+        let uuid;
+        return (
 
-                <div>
-                <Link to='/management' style={{color:'black', textDecoration:'none'}}><Button data-cy="backFromDoors" variant='contained' style={{margin:'1%',backgroundColor:'#9bbda3', textAlign:'center'}} startIcon={<ArrowBackIcon />}>back</Button></Link>
-                    <h1 style={{textAlign:'center', marginBottom:'5%'}}>Doors</h1>
-                    <AddNewDoor />
+            <div>
+                <Link to='/management' style={{color: 'black', textDecoration: 'none'}}>
+                    <Button variant='contained'
+                     style={{ margin: '1%', backgroundColor: '#9bbda3',textAlign: 'center' }}
+                      startIcon={
+                         <ArrowBackIcon/>
+                         }>
+                    back
+                    </Button>
+                 </Link>
+                <h1 style={{textAlign: 'center', marginBottom: '5%'}}>Doors</h1>
+                <AddNewDoor refetch={refetch}/>
 
                 <TableContainer style={{display: 'grid', placeItems: 'center'}}>
                     <Table className={classes.table} aria-label="customized table">
                         <TableHead>
-                        <TableRow>
-                            <StyledTableCell align="left">Doorname
-                                <Button data-cy="editDoornamebtn" onClick={handleDoornameState}><EditIcon style={{backgroundColor:'#70A07C', color:'white', borderRadius:'10%', marginLeft:'2%', marginTop:'2%'}}/></Button>
-                            </StyledTableCell>
-                            <StyledTableCell align="center">IP-Address</StyledTableCell>
-                            <StyledTableCell align="center">Color</StyledTableCell>
+                            <TableRow>
+                            <StyledTableCell></StyledTableCell>
+                                <StyledTableCell align="left">Doorname
+                                    <Button data-cy="editDoornamebtn" onClick={handleDoornameState}><EditIcon style={{
+                                        backgroundColor: '#70A07C',
+                                        color: 'white',
+                                        borderRadius: '10%',
+                                        marginLeft: '2%',
+                                        marginTop: '2%'
+                                    }}/></Button>
+                                </StyledTableCell>
+                                <StyledTableCell align="center">IP-Address</StyledTableCell>
+                                <StyledTableCell align="center">Color</StyledTableCell>
 
-                        </TableRow>
+                            </TableRow>
                         </TableHead>
                         <TableBody>
-                        {data?.map((row) => (
-                            <StyledTableRow key={row.uuid}>
-                            <StyledTableCell align="left">{editable ? <TextField value={row.doorname}  />: row.doorname }</StyledTableCell>
-                            <StyledTableCell align="center">{row.ip}</StyledTableCell>
-                            <StyledTableCell align="center" ><ColorPicker /></StyledTableCell>
-                            </StyledTableRow>
-                        ))}
+                            {data?.map((row) => (
+
+                                <StyledTableRow key={row.uuid}>
+                                <StyledTableCell><DeleteDoor uuid={row.uuid} refetch={refetch}/></StyledTableCell>
+
+                                    <StyledTableCell align="left">{editable ?<Controller
+                                            name="doorname"
+                                            control={control}
+                                            render={() => (
+                                                <TextField
+                                                    defaultValue={row.doorname}
+                                                    fullWidth
+                                                    label="doorname"
+                                                    variant='outlined'
+                                                    onChange={ e => {inputChanged = true} }
+                                                    onBlur={ e => handleDoornameChange(row.uuid, e.target.value) }
+                                                />
+                                            )}
+                                            />: <p>{row.doorname}</p>}
+                                    </StyledTableCell>
+                                    <StyledTableCell align="center">{row.ip}</StyledTableCell>
+                                    <StyledTableCell align="center">{editable ?<Controller
+                                        name="doorname"
+                                        control={control}
+                                        render={() => (
+                                            <ColorPicker uuid={row.uuid} color={row.color} refetch={refetch}/>
+                                        )}
+                                    />: <div id="colorDiv" style={{width: '41px', height: '19px', margin: '0 auto', borderRadius: '2px', backgroundColor: row.color}}/>}</StyledTableCell>
+                                </StyledTableRow>
+                            ))}
 
                         </TableBody>
                     </Table>
 
                 </TableContainer>
-              <Button variant="outlined" disabled={!editable} data-cy="saveDoorbtn" style={{float:'right',marginTop:'1%', marginRight:'20%', marginBottom:'5%'}} onClick={saveDoors}>Save</Button>
-
-                </div>
-        //#region
-                // <table>
-                //     <thead>
-                //         <tr>
-                //             <th style={{border: '1px solid black'}}>Id</th>
-                //             <th style={{border: '1px solid black'}}>Doorname</th>
-                //             <th style={{border: '1px solid black'}}>IP-Address</th>
-                //             <th style={{border: '1px solid black'}}>Color</th>
-                //         </tr>
-                //     </thead>
-                //     <tbody>
-                //         {rows}
-                //     </tbody>
-                // </table>
 
 
+            </div>
+            //#region
+            // <table>
+            //     <thead>
+            //         <tr>
+            //             <th style={{border: '1px solid black'}}>Id</th>
+            //             <th style={{border: '1px solid black'}}>Doorname</th>
+            //             <th style={{border: '1px solid black'}}>IP-Address</th>
+            //             <th style={{border: '1px solid black'}}>Color</th>
+            //         </tr>
+            //     </thead>
+            //     <tbody>
+            //         {rows}
+            //     </tbody>
+            // </table>
 
-           /* {doors.map(door => (
 
-                <table style={{float:'left'}}>
-                    <th>IP-Address</th>
-                     <td>{door.IPAdress}</td>
-                    <th>Doorname</th>
-                    <td>{door.doorName}</td>
-                     <tr></tr>
-                </table>
-            )
-          )
-        } */
-        //#endregion
+            /* {doors.map(door => (
+
+                 <table style={{float:'left'}}>
+                     <th>IP-Address</th>
+                      <td>{door.IPAdress}</td>
+                     <th>Doorname</th>
+                     <td>{door.doorName}</td>
+                      <tr></tr>
+                 </table>
              )
+           )
+         } */
+            //#endregion
+        )
     }
 
 

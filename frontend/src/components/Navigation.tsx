@@ -9,7 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { getAdminProfile, getUsers } from '../shared/API';
+import {getAdminProfile, getUsers, logoutUser, updateUser} from '../shared/API';
 import logo from '../pages/Minutiae2Logo.png';
 import { Button } from '@material-ui/core';
 
@@ -33,8 +33,7 @@ export default function MenuAppBar() {
  // const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  //const { data, isLoading } = useQuery(getAdminProfile.name, getAdminProfile);
-  const { data, isLoading } = useQuery("AdminProfile2", getAdminProfile); 
+  const { data, isLoading } = useQuery("getAdminProfilename7", getAdminProfile);
 
   // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   setAuth(event.target.checked);
@@ -48,7 +47,8 @@ export default function MenuAppBar() {
     setAnchorEl(null);
   };
 
-  const logout = () => {
+  const logout = async () => {
+      await logoutUser()().then(() => {window.location.href="/"})
 
   };
 
@@ -75,7 +75,7 @@ export default function MenuAppBar() {
          {/* {auth &&  */}
 
             <div hidden={data == null}>
-              <IconButton data-cy="nav"
+              <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
@@ -99,9 +99,9 @@ export default function MenuAppBar() {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose} data-cy="profile" ><Link to={`/profile/${data?.uuid}`} onClick={()=> window.location.href='/profile'} style={{color:'black', textDecoration:'none'}}>Profile</Link></MenuItem>
-                <MenuItem onClick={handleClose} data-cy="logs" ><Link to='/logs' onClick={()=> {window.location.href='/logs'}} style={{color:'black', textDecoration:'none'}}>Logs</Link></MenuItem>
-                <MenuItem onClick={handleClose} data-cy="logout" ><Link to='/' onClick={()=> {logout(); window.location.href='/'}} style={{color:'black', textDecoration:'none'}}>Log out</Link></MenuItem>
+                <MenuItem onClick={handleClose} ><Link to={`/profile/${data?.uuid}`} onClick={()=> window.location.href='/profile'} style={{color:'black', textDecoration:'none'}}>Profile</Link></MenuItem>
+                <MenuItem onClick={handleClose}><Link to='/logs' onClick={()=> {window.location.href='/logs'}} style={{color:'black', textDecoration:'none'}}>Logs</Link></MenuItem>
+                <MenuItem onClick={handleClose}><div onClick={()=> {logout()}} style={{color:'black', textDecoration:'none'}}>Log out</div></MenuItem>
               </Menu>
             </div>
 

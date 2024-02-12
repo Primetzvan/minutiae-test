@@ -16,30 +16,28 @@ type Inputs = {
 export default function FormDialog() {
   const [open, setOpen] = React.useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
+
+  let uuid;
   //let username ;
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    
+
    // debugger;
     const response = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
       method: 'POST',
-      headers: { 
+      headers: {
           'Content-Type': 'application/json',
           "Access-Control-Allow-Credentials": "true",
           "Access-Control-Allow-Origin": "http://localhost:3000",
-      
+
       },
       credentials: "include",
       body: JSON.stringify(data)
     });
-    const jsonData = await response.json();
-
-    if(response.ok){
-     // alert("ok");
-      //window.location.href=`/new-user/${data.username}`;
-    } else {
-     // alert("nicht ok");
-    }
-
+    await response.json().then(data => {
+        uuid = data.uuid;
+        window.location.href = `/userdetail/${uuid}`
+        console.log(uuid)
+    });
   }
   const handleClickOpen = () => {
     setOpen(true);
@@ -62,7 +60,7 @@ export default function FormDialog() {
               <DialogContentText>
                  Enter a unique username please:
              </DialogContentText>
-              <TextField 
+              <TextField
                 autoFocus
                 margin="dense"
                 id="username"
@@ -76,11 +74,11 @@ export default function FormDialog() {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose} color="inherit" data-cy="addNewUserCancel">
+                <Button onClick={handleClose} color="inherit" data-cy="addNewUserCancel">
                 Cancel
-              </Button>
-                 
-              <Button data-cy="addNewUserBtn" type="submit"><ArrowForwardIosIcon /></Button>
+                </Button>
+
+            <Button data-cy="addNewUserBtn" type="submit"><ArrowForwardIosIcon /></Button>
             </DialogActions>
         </form>
       </Dialog>

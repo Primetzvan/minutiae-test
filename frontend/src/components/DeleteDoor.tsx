@@ -14,47 +14,34 @@ import { useState } from 'react';
 import axios from 'axios';
 
 
-export default function FormDialog(props: { uuid: string, arr : User[], removeIndex: (a:number) => void}) {
+export default function FormDialog(props: { uuid: string,  refetch: Function}) {
   const [open, setOpen] = useState(false);
- // const [users, setUsers] = useState<User[]>([]);
-  //const { data, isLoading } = useQuery(getUsers.name, getUsers);
-
-
-  //console.log("del:" + props.uuid);
-
-
-  const { data, isLoading } = useQuery("getUserDetailname3", getUserDetail(props.uuid));
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
-
-    setOpen(false);
+  const handleClose = async () => {
+      setOpen(false);
   };
 
- const deleteUser = async () => {
+ const deleteDoor = async () => {
 
-  const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${props.uuid}`, {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/doors/${props.uuid}`, {
     method: 'DELETE',
-    headers: {
+    headers: { 
         'Content-Type': 'application/json',
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "http://localhost:3000",
-
+         
     },
     credentials: "include",
 });
 
 if(response.ok){
- // alert("user gelöscht");
-    let a = props.arr.map(value => value.uuid).indexOf(props.uuid);
-    console.log(a);
-    props.arr.splice(a);
-    props.removeIndex(a);
+    await props.refetch();
 }else{
-  alert("You can't delete the last admin.");
+  alert("Löschen fehlgeschlagen");
 }
 
 
@@ -64,11 +51,11 @@ if(response.ok){
     <div>
       <Button onClick={handleClickOpen}><RemoveIcon style={{color: 'red'}}/></Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Delete User</DialogTitle>
+        <DialogTitle id="form-dialog-title">Delete Door</DialogTitle>
         <DialogContent>
           <DeleteForeverIcon style={{float:'left', display:'inline-block', fontSize:'400%'}}/>
           <DialogContentText style={{float:'left', display:'inline-block'}}>
-            Do you really want to delete the user?
+            Do you really want to delete the door?
             {/* {data?.username} */}
           </DialogContentText>
         </DialogContent>
@@ -76,8 +63,8 @@ if(response.ok){
           <Button onClick={handleClose} color="inherit" data-cy="deleteUserCancel">
             No
           </Button>
-          <Button data-cy="deleteUserbtn" onClick={() => {deleteUser(); handleClose(); }}>
-              <Link to='/users'>Yes</Link>
+          <Button data-cy="deleteUserbtn" onClick={() => {deleteDoor(); handleClose(); }}>
+              <Link to='/doors'>Yes</Link>
         </Button>
         </DialogActions>
       </Dialog>
