@@ -21,7 +21,7 @@ services:
 #      MYSQL_USER: "user"
 #      MYSQL_PASSWORD: "password"
 #      MARIADB_ROOT_PASSWORD: "password"
-#      MARIADB__DATABASE: "mariadb"
+#      MARIADB_DATABASE: "mariadb"
 #      MARIADB_USER: "user"
 #      MARIADB_PASSWORD: "password"
 #    ports:
