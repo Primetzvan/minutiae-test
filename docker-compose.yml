@@ -11,41 +11,41 @@ services:
 #      - RAFT_ADDR_ADV="192.168.0.13:4002"
 #      - HTTP_ADDR_ADV="192.168.0.13:4001"
 #    restart: always
-#  database:
-#    image: mariadb:10.8.2
+  database:
+    image: mariadb:10.8.2
 ##    image: mysql:8.0.21
-#    container_name: database
-#    environment:
+    container_name: database
+    environment:
 #      MYSQL_ROOT_PASSWORD: "password"
 #      MYSQL_DATABASE: "mariadb"
 #      MYSQL_USER: "user"
 #      MYSQL_PASSWORD: "password"
-#      MARIADB_ROOT_PASSWORD: "password"
-#      MARIADB__DATABASE: "mariadb"
-#      MARIADB_USER: "user"
-#      MARIADB_PASSWORD: "password"
-#    ports:
-#      - "3306:3306"
-#    restart: always
-#  mosquitto:
-#    image: eclipse-mosquitto:latest
-#    container_name: mosquitto
-#    volumes:
-#      - ./mosquitto:/mosquitto/
-#    ports:
-#      - "1883:1883"
-#    restart: always
-#  backend:
-#    container_name: backend
-#    build:
-#      context: backend
-#      dockerfile: Dockerfile
-#    ports:
-#      - "3000:3000"
-#    links:
-#      - database
-#      - mosquitto
-#    restart: always
+      MARIADB_ROOT_PASSWORD: "password"
+      MARIADB_DATABASE: "mariadb"
+      MARIADB_USER: "user"
+      MARIADB_PASSWORD: "password"
+    ports:
+      - "3306:3306"
+    restart: always
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    volumes:
+      - ./mosquitto:/mosquitto/
+    ports:
+      - "1883:1883"
+    restart: always
+  backend:
+    container_name: backend
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    links:
+      - database
+      - mosquitto
+    restart: always
   frontend:
     container_name: frontend
     build:
@@ -54,5 +54,5 @@ services:
     ports:
       - "3001:80"
     restart: always
-#    links:
-#      - backend
+    links:
+      - backend
